@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 2,
+  "proyecto": "carnival-of",
+  "version": "0.3.0",
+  "fase": 3,
+  "actualizado": "2026-11-07",
+  "leyenda": {
+    "estado": {
+      "implementado": "Existe y es utilizable en la Fase 3.",
+      "parcial": "Existe una parte funcional, con alcance limitado documentado.",
+      "diferido": "Reservado para una fase posterior; no debe presentarse como funcional.",
+      "no-implementado": "No existe en esta entrega."
+    },
+    "verificacion": {
+      "typecheck": "Comprobado con tsc para cliente y servidor.",
+      "unitarias": "Cubierto por pruebas Vitest.",
+      "build": "Incluido en el build de producción.",
+      "smoke-red": "Comprobado con servidor y sockets WebSocket reales.",
+      "navegador-lobby": "Comprobado en navegador real hasta el lobby/inicio.",
+      "navegador-interaccion": "Se comprobó una interacción concreta en navegador.",
+      "navegador-hud": "Panel de HUD observado en una partida online montada.",
+      "revision-codigo": "Revisado en código, sin prueba de comportamiento completa.",
+      "pendiente-visual": "No se pudo inspeccionar el resultado visual en esta sesión.",
+      "bloqueado-entorno": "Requiere una ventana o gesto real no disponible.",
+      "no-implementado": "No existe en esta fase."
+    }
+  },
+  "funcionalidades": [
+    {
+      "id": "ui.main-menu",
+      "nombre": "Menú principal",
+      "descripcion": "Portada, narrativa, aviso de fase, selección de rol/personaje, ayuda, ajustes y accesos a entrenamiento local y salas online.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "build", "navegador-interaccion"],
+      "notas": "El título y los textos muestran Fase 3 y versión 0.3.0."
+    },
+    {
+      "id": "ui.character-select",
+      "nombre": "Selección de personajes",
+      "descripcion": "Seis supervivientes originales con profesión, edad, origen, paleta y estadísticas; tarjeta separada del asesino.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "navegador-interaccion"],
+      "notas": "Los datos viven en src/shared/characters.ts."
+    },
+    {
+      "id": "ui.settings",
+      "nombre": "Ajustes persistentes",
+      "descripcion": "Calidad, FOV, sensibilidad, inversión, volumen y reducción de movimiento; se guardan en localStorage.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "navegador-interaccion"],
+      "notas": "La persistencia explícita tras recarga queda pendiente de comprobación visual."
+    },
+    {
+      "id": "ui.help",
+      "nombre": "Ayuda y controles",
+      "descripcion": "Modal con explicación de las dos perspectivas, los controles principales y las reglas de Fase 3.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "revision-codigo"],
+      "notas": "Revisado en código; no se recorrió completo en esta sesión."
+    },
+    {
+      "id": "ui.pause",
+      "nombre": "Pausa y salida",
+      "descripcion": "Pausa con reanudar, ajustes, cambio de rol solo en local y salida segura de la partida/sala.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "navegador-interaccion"],
+      "notas": "En online, el rol está fijado por la sala."
+    },
+    {
+      "id": "game.fps-camera",
+      "nombre": "Cámara FPS del superviviente",
+      "descripcion": "Primera persona con mirada, head bob, crouch, FOV configurable y viewmodel procedural.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "navegador-interaccion", "pendiente-visual"],
+      "notas": "El movimiento por teclado se reflejó en la posición; pointer lock y cámara no se validaron visualmente."
+    },
+    {
+      "id": "game.aerial-camera",
+      "nombre": "Cámara aérea del asesino",
+      "descripcion": "Cámara táctica con órbita, elevación, paneo limitado a 15 m y zoom acotado.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "navegador-interaccion", "pendiente-visual"],
+      "notas": "La interacción visual de la órbita/zoom queda pendiente de ventana visible."
+    },
+    {
+      "id": "game.zoom-cap",
+      "nombre": "Zoom táctico conservador",
+      "descripcion": "Distancia mínima 28 m, por defecto 34 m, máxima 52 m y paso 2. Reduce el máximo acercamiento de 2.9x a 1.86x.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias"],
+      "notas": "4 pruebas en tests/camera.test.ts."
+    },
+    {
+      "id": "game.movement",
+      "nombre": "Movimiento determinista",
+      "descripcion": "Paso fijo a 60 Hz con aceleración, sprint, crouch, diagonal sin ventaja y colisión deslizante.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "smoke-red", "pendiente-visual"],
+      "notas": "Compartido por cliente y servidor mediante stepMovement."
+    },
+    {
+      "id": "game.collision",
+      "nombre": "Colisión círculo/AABB",
+      "descripcion": "Resolvedor determinista contra cajas estáticas y límites del mapa, con empuje y deslizamiento.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "build"],
+      "notas": "Sin rampas, alturas jugables ni física dinámica."
+    },
+    {
+      "id": "map.procedural",
+      "nombre": "Mapa procedural del carnaval",
+      "descripcion": "Recinto de 96x96 m con carrusel, noria, gran carpa, casetas, vallas, cajas, barriles, luces y decoración.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "build", "navegador-interaccion"],
+      "notas": "Sin assets externos; la primera carga compila la geometría."
+    },
+    {
+      "id": "map.validation",
+      "nombre": "Validación del mapa",
+      "descripcion": "Comprueba ids, bounds, huellas, rotaciones, vallas, spawns y datos de generadores/salidas antes de jugar.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "build"],
+      "notas": "Se ejecuta tanto en cliente como al crear una sala en servidor."
+    },
+    {
+      "id": "game.bots-local",
+      "nombre": "Bots de entrenamiento local",
+      "descripcion": "Cuatro bots con PRNG determinista, colisión, animación y ruido aproximado solo en el modo local.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "navegador-interaccion", "pendiente-visual"],
+      "notas": "No se usan en online; no reparan generadores ni abren salidas."
+    },
+    {
+      "id": "game.audio",
+      "nombre": "Audio procedural",
+      "descripcion": "Web Audio para pasos, ambiente y eventos, iniciado tras un gesto del usuario.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "revision-codigo", "bloqueado-entorno"],
+      "notas": "No se pudo validar salida de audio real en el harness."
+    },
+    {
+      "id": "game.occlusion",
+      "nombre": "Oclusión selectiva",
+      "descripcion": "Techos y toldos se vuelven translúcidos cuando bloquean el foco de la cámara aérea.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "revision-codigo", "pendiente-visual"],
+      "notas": "Pendiente de inspección visual con la cámara aérea."
+    },
+    {
+      "id": "game.noise",
+      "nombre": "Anillos de ruido",
+      "descripcion": "Pings aproximados para pasos/carreras de supervivientes, visibles para el asesino.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "revision-codigo", "pendiente-visual"],
+      "notas": "En online se derivan del estado de sprint del snapshot; no hay eventos de ruido dedicados."
+    },
+    {
+      "id": "game.objectives-repair",
+      "nombre": "Reparación de generadores",
+      "descripcion": "Mantener E junto a un generador acumula progreso; 22 s base y multiplicador de destreza x0.75–x1.25.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "build", "navegador-hud"],
+      "notas": "El HUD muestra el progreso y el aviso E; el recorrido visual completo no se validó."
+    },
+    {
+      "id": "game.objectives-power",
+      "nombre": "Energía del recinto",
+      "descripcion": "Al reparar 4 de los 5 generadores se activa la energía y las salidas pasan a ser interactuables.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "smoke-red"],
+      "notas": "El snapshot incluye repairedCount, requiredGenerators y powered."
+    },
+    {
+      "id": "game.objectives-gates",
+      "nombre": "Apertura de salidas",
+      "descripcion": "Mantener E junto a una salida con energía acumula 12 s base; sin energía no hay objetivo de salida.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias"],
+      "notas": "Dos salidas en el mapa, ambas con requiredGenerators: 4."
+    },
+    {
+      "id": "game.objectives-escape",
+      "nombre": "Escape y victoria de supervivientes",
+      "descripcion": "Al cruzar una salida abierta, el superviviente se marca escaped y el equipo gana la partida.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias"],
+      "notas": "Cubierto por la prueba de sala autoritativa; no recorrido visualmente en navegador."
+    },
+    {
+      "id": "game.match-timeout",
+      "nombre": "Límite de 5 minutos y victoria del asesino",
+      "descripcion": "El reloj avanza en el servidor; al llegar a cero termina la partida con winner killer y reason timeout.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "navegador-hud", "navegador-interaccion"],
+      "notas": "Overlay verificado en navegador con duración 05:00 y derrota del superviviente."
+    },
+    {
+      "id": "game.killer-suppression",
+      "nombre": "Supresión por proximidad del asesino",
+      "descripcion": "Si el asesino está a menos de 5.5 m, la interacción del superviviente no progresa; no hay combate.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias"],
+      "notas": "No confundir con daño o eliminación: no existen todavía."
+    },
+    {
+      "id": "game.objective-visuals",
+      "nombre": "Visuales de generadores y salidas",
+      "descripcion": "Props procedurales de generadores, compuertas y luces de estado que reflejan el snapshot autoritativo.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "build", "revision-codigo"],
+      "notas": "El canvas se montó en navegador, pero no se inspeccionó visualmente el detalle 3D."
+    },
+    {
+      "id": "net.protocol",
+      "nombre": "Protocolo WebSocket tipado v3",
+      "descripcion": "Versión 3 con hello, salas, perfiles, inicio, comandos con interact, snapshots con objetivos y resultado, ping, error y sesión expirada.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "smoke-red"],
+      "notas": "Parseo defensivo y límite de payload de 16 KiB."
+    },
+    {
+      "id": "net.server",
+      "nombre": "Servidor autoritativo",
+      "descripcion": "Node + ws con tick de 60 Hz, snapshots de 20 Hz, /health y cierre limpio.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "smoke-red", "revision-codigo"],
+      "notas": "En memoria y en un único proceso; sin TLS ni autenticación fuerte."
+    },
+    {
+      "id": "net.rooms",
+      "nombre": "Salas privadas 1v4",
+      "descripcion": "Código de 4 caracteres, 1 asesino, hasta 4 supervivientes, anfitrión, preparado e inicio.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "smoke-red", "navegador-lobby"],
+      "notas": "La salida del lobby mantiene viva la sala para los demás y transfiere el host."
+    },
+    {
+      "id": "net.lobby",
+      "nombre": "Lobby online",
+      "descripcion": "Crear/unirse, nombre, rol, personaje, roster, preparado, inicio del host, copiar código y estado de red.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "navegador-lobby", "smoke-red"],
+      "notas": "Los errores del servidor liberan el formulario y revierten el rol rechazado."
+    },
+    {
+      "id": "net.prediction",
+      "nombre": "Predicción local",
+      "descripcion": "El jugador local simula su movimiento a 60 Hz y envía comandos a 30 Hz.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "smoke-red", "revision-codigo"],
+      "notas": "La fluidez visual no se pudo comprobar en el harness."
+    },
+    {
+      "id": "net.reconciliation",
+      "nombre": "Corrección desde snapshots",
+      "descripcion": "Si la posición autoritativa difiere más de 0.6 m, el cliente corrige posición y velocidad.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "revision-codigo"],
+      "notas": "No hay replay completo de comandos pendientes."
+    },
+    {
+      "id": "net.remote-interpolation",
+      "nombre": "Interpolación de remotos",
+      "descripcion": "Jugadores remotos se amortiguan hacia el último snapshot de 20 Hz en el render de 60 Hz.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "revision-codigo", "pendiente-visual"],
+      "notas": "Amortiguación simple, no buffer temporal exacto."
+    },
+    {
+      "id": "net.reconnect",
+      "nombre": "Reconexión con gracia",
+      "descripcion": "Token en sessionStorage; el servidor conserva la plaza 25 s y reenvía match/snapshot al reanudar, incluido el resultado final.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "smoke-red"],
+      "notas": "El token es de transporte, no una identidad autenticada."
+    },
+    {
+      "id": "net.authoritative-objectives",
+      "nombre": "Objetivos validados por servidor",
+      "descripcion": "El servidor acumula reparaciones y aperturas, aplica supresión, marca escaped y decide el resultado; el cliente no puede imponer progreso.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "smoke-red"],
+      "notas": "Cubierto por CarnivalRoom en tests/objectives.test.ts."
+    },
+    {
+      "id": "net.authoritative-movement",
+      "nombre": "Movimiento validado por servidor",
+      "descripcion": "El servidor recalcula perfil, colisiones y posición; el cliente no puede imponer velocidad.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "smoke-red"],
+      "notas": "Smoke real: superviviente 3.15 m y asesino 4.17 m por acción del servidor."
+    },
+    {
+      "id": "shared.colliders",
+      "nombre": "Colliders compartidos",
+      "descripcion": "La escena y el servidor derivan los mismos AABB desde map.config.json, incluidas puertas, carrusel y generadores.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "build"],
+      "notas": "Pruebas de derivación, ids, spawns, formas y generadores."
+    },
+    {
+      "id": "shared.objectives",
+      "nombre": "Reglas puras de objetivos",
+      "descripcion": "Módulo sin DOM/Three.js con tiempos, radios, energía, escape, supresión, reloj y resultado compartido por cliente y servidor.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "unitarias", "build"],
+      "notas": "src/shared/objectives.ts; 5 pruebas específicas."
+    },
+    {
+      "id": "ui.hud",
+      "nombre": "HUD de juego",
+      "descripcion": "Salud, modo, personaje, objetivo, generadores, energía, reloj, aviso de interacción, ruido, FPS, draw calls, triángulos, sala, jugadores, latencia y tick.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "navegador-hud", "pendiente-visual"],
+      "notas": "Panel de objetivos verificado en partida online; el frame 3D no se pudo inspeccionar."
+    },
+    {
+      "id": "ui.match-end",
+      "nombre": "Overlay de fin de partida",
+      "descripcion": "Muestra ganador, motivo, generadores reparados y duración; se activa con el resultado autoritativo o local.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "navegador-interaccion", "unitarias"],
+      "notas": "Verificado con timeout en navegador; la victoria por escape está cubierta por prueba de sala."
+    },
+    {
+      "id": "ui.debug",
+      "nombre": "Debug de colliders y panel",
+      "descripcion": "F2 alterna colliders; F3 alterna el panel de depuración.",
+      "estado": "implementado",
+      "verificacion": ["typecheck", "navegador-interaccion"],
+      "notas": "F3 verificado en partida online; F2 no se inspeccionó visualmente."
+    },
+    {
+      "id": "deferred.combat",
+      "nombre": "Combate y daño",
+      "descripcion": "Ataques del asesino, salud, derribo, curación y eliminación.",
+      "estado": "diferido",
+      "verificacion": ["no-implementado"],
+      "notas": "El estado de salud existe, pero no hay reglas de combate."
+    },
+    {
+      "id": "deferred.items",
+      "nombre": "Objetos e inventario",
+      "descripcion": "Herramientas, consumibles, escondites y objetos de interacción.",
+      "estado": "diferido",
+      "verificacion": ["no-implementado"],
+      "notas": "No implementado."
+    },
+    {
+      "id": "deferred.killer-archetypes",
+      "nombre": "Arquetipos de asesino",
+      "descripcion": "Varios asesinos con habilidades y estadísticas propias.",
+      "estado": "diferido",
+      "verificacion": ["no-implementado"],
+      "notas": "El prototipo actual usa un único Maestro de Ceremonias."
+    }
+  ]
+}

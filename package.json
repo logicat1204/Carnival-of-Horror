@@ -1,0 +1,36 @@
+{
+  "name": "carnival-of",
+  "private": true,
+  "version": "0.3.0",
+  "description": "Carnival of... — asymmetric 3D survival horror for the web. Phase 3: generators, power, exits and match end.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:online": "concurrently -k -n server,client -c magenta,cyan \"npm:server\" \"npm:dev\"",
+    "server": "tsx server/index.ts",
+    "build": "tsc --noEmit && tsc -p tsconfig.server.json && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "smoke": "node scripts/smoke-server.mjs",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.server.json"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.187.0",
+    "ws": "^8.22.1"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@types/three": "^0.187.0",
+    "@types/ws": "^8.18.2",
+    "@vitejs/plugin-react": "^5.2.0",
+    "concurrently": "^10.0.6",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.7",
+    "vitest": "^5.0.5"
+  }
+}
